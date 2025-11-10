@@ -3,7 +3,8 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import { RouterProvider } from "react-router/dom";
 import { router } from "./routes/Router.jsx";
-import AuthContext from "./routes/AuthContext.jsx";
+import AuthProvider from "./routes/AuthProvider.jsx";
+
 
 
 createRoot(document.getElementById("root")).render(

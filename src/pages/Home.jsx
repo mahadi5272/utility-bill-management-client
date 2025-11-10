@@ -1,11 +1,17 @@
-import React from 'react';
+import BillCard from "../component/BillCard";
+import { useLoaderData } from "react-router";
 
 const Home = () => {
-    return (
-        <div>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam maxime qui quis voluptates sequi blanditiis corporis perspiciatis asperiores necessitatibus. Eius, voluptate. Quis eveniet quae quisquam libero. Doloribus delectus non at.
-        </div>
-    );
+  const bill = useLoaderData();
+
+  console.log(bill);
+  return (
+    <div className="grid grid-cols-3 gap-3.5">
+      {bill.map((bill) => (
+        <BillCard bill={bill}></BillCard>
+      ))}
+    </div>
+  );
 };
 
 export default Home;

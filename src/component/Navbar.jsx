@@ -1,6 +1,39 @@
-import React from "react";
+import React, { useContext } from "react";
+import { Link } from "react-router";
+import { AuthContext } from "../routes/AuthProvider";
 
 const Navbar = () => {
+  const { user, LogOut } = useContext(AuthContext);
+  const links = (
+    <>
+      <li>
+        <Link to="/home">Home</Link>
+      </li>
+      <li>
+        <Link to="/bills">Bills</Link>
+      </li>
+      <li>
+        <Link to="/registition">SignUp</Link>
+      </li>
+    
+    </>
+  );
+  const links2 = (
+    <>
+      <li>
+        <Link to="/home">Home</Link>
+      </li>
+      <li>
+        <Link to="/bills">Bills</Link>
+      </li>
+      <li>
+        <Link to="/mybills">My Bills</Link>
+      </li>
+    </>
+  );
+  const handleSignOut = () => {
+    LogOut();
+  };
   return (
     <div className="navbar bg-base-100 shadow-sm">
       <div className="navbar-start">
@@ -26,52 +59,42 @@ const Navbar = () => {
             tabIndex="-1"
             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
           >
-            <li>
-              <a>Item 1</a>
-            </li>
-            <li>
-              <a>Parent</a>
-              <ul className="p-2">
-                <li>
-                  <a>Submenu 1</a>
-                </li>
-                <li>
-                  <a>Submenu 2</a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a>Item 3</a>
-            </li>
+            {user ? links2 : links}
           </ul>
         </div>
         <a className="btn btn-ghost text-xl">daisyUI</a>
       </div>
-      <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">
-          <li>
-            <a>Item 1</a>
-          </li>
-          <li>
-            <details>
-              <summary>Parent</summary>
-              <ul className="p-2">
-                <li>
-                  <a>Submenu 1</a>
-                </li>
-                <li>
-                  <a>Submenu 2</a>
-                </li>
-              </ul>
-            </details>
-          </li>
-          <li>
-            <a>Item 3</a>
-          </li>
-        </ul>
+      <div className="navbar-end hidden lg:flex">
+        <ul className="menu menu-horizontal px-1">{user ? links2 : links}</ul>
       </div>
-      <div className="navbar-end">
-        <a className="btn">Button</a>
+      <div className="flex justify-between gap-3">
+        <div className="]">
+          <>
+            <Link to="/profile">
+              <>
+                {" "}
+                {user && (
+                  <img
+                    className="rounded-full w-[50px] "
+                    src={user?.photoURL}
+                    alt=""
+                  />
+                )}
+              </>
+            </Link>
+          </>
+        </div>
+        <div>
+          {user ? (
+            <button onClick={handleSignOut} className="btn btn-primary">
+              LogOut
+            </button>
+          ) : (
+            <button className="btn btn-primary">
+              <Link to="/login">Login</Link>
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
