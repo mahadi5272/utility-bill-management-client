@@ -1,5 +1,5 @@
-import React from "react";
-import { useLoaderData } from "react-router";
+import { Link, useLoaderData } from "react-router";
+import { AuthContext } from "../routes/AuthProvider";
 
 const Bills = () => {
   const bills = useLoaderData();
@@ -32,10 +32,11 @@ const Bills = () => {
                   {bill.amount}
                 </p>
               </div>
-
-              <button className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition">
-                See Details
-              </button>
+              <Link to={`/billDetails/${bill._id}`}>
+                <button className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition">
+                  See Details
+                </button>
+              </Link>
             </div>
           </div>
         ))}

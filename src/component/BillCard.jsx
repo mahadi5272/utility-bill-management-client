@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router";
 
 const BillCard = ({ bill }) => {
   const {
@@ -30,10 +31,10 @@ const BillCard = ({ bill }) => {
           {new Date(date).toLocaleDateString()}
         </p>
       </div>
-
       <button className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition">
         See Details
       </button>
+      
     </div>
   );
 };

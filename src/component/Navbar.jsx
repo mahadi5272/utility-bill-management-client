@@ -4,6 +4,7 @@ import { AuthContext } from "../routes/AuthProvider";
 
 const Navbar = () => {
   const { user, LogOut } = useContext(AuthContext);
+
   const links = (
     <>
       <li>
