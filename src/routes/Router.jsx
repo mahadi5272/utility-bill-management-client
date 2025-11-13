@@ -8,6 +8,7 @@ import MyPayBills from "../pages/MyPayBills";
 import ProfileAvatar from "../pages/ProfileAvatar";
 import BillDetails from "../pages/BillDetails";
 import ErrorPage from "../pages/ErrorPage";
+import PrivateRoute from "../component/PrivateRoute";
 
 
 export const router = createBrowserRouter([
@@ -37,9 +38,13 @@ export const router = createBrowserRouter([
         path: "/profile",
         Component: ProfileAvatar,
       },
-      {
+       {
         path: "/mybills",
-        Component: MyPayBills,
+        Component: () => (
+          <PrivateRoute>
+            <MyPayBills />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/profile",
