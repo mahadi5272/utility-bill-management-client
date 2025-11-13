@@ -1,9 +1,26 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { Link } from "react-router";
 import { AuthContext } from "../routes/AuthProvider";
 
 const Navbar = () => {
   const { user, LogOut } = useContext(AuthContext);
+  const [theme, setTheme] = useState("light");
+
+  // page load এ previous theme load করা
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) {
+      setTheme(savedTheme);
+      document.documentElement.setAttribute("data-theme", savedTheme);
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+    document.documentElement.setAttribute("data-theme", newTheme);
+    localStorage.setItem("theme", newTheme);
+  };
 
   const links = (
     <>
@@ -16,9 +33,14 @@ const Navbar = () => {
       <li>
         <Link to="/registition">SignUp</Link>
       </li>
-    
+      <li>
+        <button onClick={toggleTheme} className="btn  btn-active">
+          {theme === "light" ? "Dark Mode" : "Light Mode"}
+        </button>
+      </li>
     </>
   );
+
   const links2 = (
     <>
       <li>
@@ -30,14 +52,21 @@ const Navbar = () => {
       <li>
         <Link to="/mybills">My Bills</Link>
       </li>
+      <li>
+        <button onClick={toggleTheme} className="btn  btn-active">
+          {theme === "light" ? "Dark Mode" : "Light Mode"}
+        </button>
+      </li>
     </>
   );
+
   const handleSignOut = () => {
     LogOut();
   };
+
   return (
-    <div className="navbar bg-base-100 shadow-sm">
-      <div className="navbar-start">
+    <div className="navbar bg-base-100 shadow-sm px-4 md:justify-end md:gap-5">
+      <div className="navbar-start md:ml-0">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
             <svg
@@ -47,13 +76,12 @@ const Navbar = () => {
               viewBox="0 0 24 24"
               stroke="currentColor"
             >
-              {" "}
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth="2"
                 d="M4 6h16M4 12h8m-8 6h16"
-              />{" "}
+              />
             </svg>
           </div>
           <ul
@@ -65,27 +93,26 @@ const Navbar = () => {
         </div>
         <a className="btn btn-ghost text-xl">daisyUI</a>
       </div>
+
       <div className="navbar-end hidden lg:flex">
         <ul className="menu menu-horizontal px-1">{user ? links2 : links}</ul>
       </div>
-      <div className="flex justify-between gap-3">
-        <div className="]">
-          <>
-            <Link to="/profile">
-              <>
-                {" "}
-                {user && (
-                  <img
-                    className="rounded-full w-[50px] "
-                    src={user?.photoURL}
-                    alt=""
-                  />
-                )}
-              </>
-            </Link>
-          </>
-        </div>
+
+      <div className="flex justify-between   gap-3 items-center">
         <div>
+          <Link to="/profile">
+            {user && (
+              <img
+                className="rounded-full w-[50px]"
+                src={user?.photoURL}
+                alt="User"
+              />
+            )}
+          </Link>
+        </div>
+        <div>{/* Theme Toggle Button */}</div>
+
+        <div className="flex  gap-2 items-center">
           {user ? (
             <button onClick={handleSignOut} className="btn btn-primary">
               LogOut

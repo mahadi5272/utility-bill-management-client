@@ -1,51 +1,67 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { AuthContext } from "../routes/AuthProvider";
+import { Link, useNavigate, useLocation } from "react-router";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const { signIn, signInWithGoogle } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Redirect to intended page after login or default to home
+  const from = location.state?.from?.pathname || "/home";
+
+  useEffect(() => {
+    document.title = "Login | UBM System";
+  }, []);
+
   const handleSignIn = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
+
     signIn(email, password)
       .then((res) => {
-        console.log(res);
+        toast.success("Login successful!");
+        navigate(from, { replace: true });
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
+        toast.error(error.message || "Login failed!");
       });
   };
-  const handleGooglSignIn = ()=>{
+
+  const handleGoogleSignIn = () => {
     signInWithGoogle()
-    .then(res=>{
-      console.log(res)
-    })
-    .catch(erro =>{
-      console.log(erro)
-    })
-  }
+      .then((res) => {
+        toast.success("Login successful!");
+        navigate(from, { replace: true });
+      })
+      .catch((error) => {
+        console.error(error);
+        toast.error(error.message || "Google Login failed!");
+      });
+  };
+
   return (
     <div className="hero bg-base-200 min-h-screen">
       <div className="hero-content flex-col lg:flex-row-reverse">
         <div className="text-center lg:text-left">
           <h1 className="text-5xl font-bold">Login now!</h1>
-          <p className="py-6">
-            Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
-            excepturi exercitationem quasi. In deleniti eaque aut repudiandae et
-            a id nisi.
+          <p className="py-6 text-gray-700">
+            Welcome back! Please login to access your account and manage your bills.
           </p>
         </div>
         <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
           <div className="card-body">
             <form onSubmit={handleSignIn} className="fieldset">
-              <label className="label">Name</label>
-              <input type="text" className="input" placeholder="Name" />
               <label className="label">Email</label>
               <input
                 type="email"
                 name="email"
                 className="input"
                 placeholder="Email"
+                required
               />
               <label className="label">Password</label>
               <input
@@ -53,14 +69,23 @@ const Login = () => {
                 name="password"
                 className="input"
                 placeholder="Password"
+                required
               />
-              <div>
-                <a className="link link-hover">Forgot password?</a>
+              <div className="mt-2">
+                <Link to="/forgot-password" className="link link-hover text-sm">
+                  Forgot password?
+                </Link>
               </div>
-              <button className="btn btn-neutral mt-4">Login</button>
+              <button className="btn btn-neutral mt-4 w-full">Login</button>
             </form>
-            {/* Google */}
-            <button onClick={handleGooglSignIn} className="btn bg-white text-black border-[#e5e5e5]">
+
+            <div className="divider">OR</div>
+
+            {/* Google Login */}
+            <button
+              onClick={handleGoogleSignIn}
+              className="btn bg-white text-black border-[#e5e5e5] w-full flex items-center justify-center gap-2"
+            >
               <svg
                 aria-label="Google logo"
                 width="16"
@@ -90,6 +115,13 @@ const Login = () => {
               </svg>
               Login with Google
             </button>
+
+            <p className="mt-4 text-center text-gray-600">
+              Don't have an account?{" "}
+              <Link to="/register" className="link link-hover text-blue-600">
+                Register here
+              </Link>
+            </p>
           </div>
         </div>
       </div>

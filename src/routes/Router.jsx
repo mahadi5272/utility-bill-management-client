@@ -7,6 +7,8 @@ import Bills from "../pages/Bills";
 import MyPayBills from "../pages/MyPayBills";
 import ProfileAvatar from "../pages/ProfileAvatar";
 import BillDetails from "../pages/BillDetails";
+import ErrorPage from "../pages/ErrorPage";
+
 
 export const router = createBrowserRouter([
   {
@@ -17,19 +19,19 @@ export const router = createBrowserRouter([
         path: "/home",
         Component: Home,
         loader: () =>
-          fetch("http://localhost:3000/Recent").then((res) => res.json()),
+          fetch("https://bill-management-server-indol.vercel.app/Recent").then((res) => res.json()),
       },
       {
         path: "/bills",
         Component: Bills,
         loader: () =>
-          fetch("http://localhost:3000/bills").then((res) => res.json()),
+          fetch("https://bill-management-server-indol.vercel.app/bills").then((res) => res.json()),
       },
       {
         path: "/billDetails/:id",
         Component: BillDetails,
         loader: ({params}) =>
-          fetch(`http://localhost:3000/billDetails/${params.id}`).then((res) => res.json()),
+          fetch(`https://bill-management-server-indol.vercel.app/billDetails/${params.id}`).then((res) => res.json()),
       },
       {
         path: "/profile",
@@ -51,6 +53,10 @@ export const router = createBrowserRouter([
         path: "/login",
         Component: Login,
       },
+      {
+        path:"*",
+        Component:ErrorPage
+      }
     ],
   },
 ]);
