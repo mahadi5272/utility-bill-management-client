@@ -58,14 +58,14 @@ const Navbar = () => {
         </button>
       </li>
     </>
-  );
+  ); 
 
   const handleSignOut = () => {
     LogOut();
   };
 
   return (
-    <div className="navbar bg-base-100 shadow-sm px-4 md:justify-end md:gap-5">
+    <div className="navbar bg-base-100 shadow-sm px-4 md:justify-end md:gap-5 bg-[url('https://i.ibb.co.com/Txn7DjQS/pngtree-illustrated-circuit-board-abstract-background-with-electronic-elements-perfect-for-technolog.png')] bg-cover bg-no-repeat ">
       <div className="navbar-start md:ml-0">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -91,11 +91,11 @@ const Navbar = () => {
             {user ? links2 : links}
           </ul>
         </div>
-        <a className="btn btn-ghost text-xl">daisyUI</a>
+        <img className="w-[50px] h-12 rounded-xl items-center" src="https://i.ibb.co.com/HL5LHKY7/images-10.jpg" alt="" />
       </div>
 
       <div className="navbar-end hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">{user ? links2 : links}</ul>
+        <ul className="menu menu-horizontal px-1 text-white">{user ? links2 : links}</ul>
       </div>
 
       <div className="flex justify-between   gap-3 items-center">
