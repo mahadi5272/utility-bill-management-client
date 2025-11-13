@@ -172,7 +172,7 @@ const MyPayBills = () => {
                       </button>
                       <button
                         onClick={() => openDeleteModal(bill)}
-                        className="bg-red-500 text-shadow-white px-3 py-1 rounded hover:bg-red-600"
+                        className="bg-red-500 text-whit px-3 py-1 rounded hover:bg-red-600"
                       >
                         Delete
                       </button>
