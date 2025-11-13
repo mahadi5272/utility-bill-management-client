@@ -17,7 +17,9 @@ const MyPayBills = () => {
 
   useEffect(() => {
     if (user?.email) {
-      fetch(`https://bill-management-server-indol.vercel.app/myBills?email=${user.email}`)
+      fetch(
+        `https://bill-management-server-indol.vercel.app/myBills?email=${user.email}`
+      )
         .then((res) => res.json())
         .then((data) => setBills(data))
         .catch((err) => console.log(err));
@@ -52,7 +54,9 @@ const MyPayBills = () => {
       .then((data) => {
         if (data.modifiedCount > 0 || data.matchedCount > 0) {
           setBills((prev) =>
-            prev.map((bill) => (bill._id === id ? { ...bill, ...updatedBill } : bill))
+            prev.map((bill) =>
+              bill._id === id ? { ...bill, ...updatedBill } : bill
+            )
           );
         }
         if (modalRef.current) modalRef.current.close();
@@ -93,7 +97,14 @@ const MyPayBills = () => {
     const doc = new jsPDF();
     doc.text("My Pay Bills", 10, 10);
 
-    const tableColumn = ["Username", "Email", "Amount", "Address", "Phone", "Date"];
+    const tableColumn = [
+      "Username",
+      "Email",
+      "Amount",
+      "Address",
+      "Phone",
+      "Date",
+    ];
     const tableRows = bills.map((bill) => [
       bill.username,
       bill.email,
@@ -124,7 +135,7 @@ const MyPayBills = () => {
       )}
 
       {bills.length === 0 ? (
-        <p className="text-center text-gray-500 text-lg">
+        <p className="text-center text-gray-500 text-xl">
           No bills found for this account.
         </p>
       ) : (
@@ -273,7 +284,10 @@ const MyPayBills = () => {
       </dialog>
 
       {/* ✅ Delete Modal */}
-      <dialog ref={deleteModalRef} className="modal modal-bottom sm:modal-middle">
+      <dialog
+        ref={deleteModalRef}
+        className="modal modal-bottom sm:modal-middle"
+      >
         <div className="modal-box">
           <h3 className="font-bold text-lg">Are you sure?</h3>
           <p className="py-4">You want to delete this bill?</p>
@@ -288,7 +302,7 @@ const MyPayBills = () => {
               Yes
             </button>
             <button
-              className="btn"
+              className="btn btn-primary"
               onClick={() => deleteModalRef.current.close()}
             >
               Cancel
