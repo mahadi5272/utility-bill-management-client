@@ -1,25 +1,28 @@
-import { Link, useLoaderData } from "react-router";
+import React, { useContext, useEffect, useState } from "react";
+import { useLoaderData, Link } from "react-router";
 import { AuthContext } from "../routes/AuthProvider";
-import { useContext, useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 const Bills = () => {
   const bills = useLoaderData();
-  const [selectcategory, setSelectcategory] = useState("");
-  const [filtterdBills, setFiltteredBills] = useState(bills);
+  const [selectCategory, setSelectCategory] = useState("");
+  const [filteredBills, setFilteredBills] = useState(bills);
+  const { loading } = useContext(AuthContext);
 
   useEffect(() => {
-    if (selectcategory === "") {
-      setFiltteredBills(bills);
+    if (selectCategory === "") {
+      setFilteredBills(bills);
     } else {
-      setFiltteredBills(
-        bills.filter((bill) => bill.category === selectcategory)
+      setFilteredBills(
+        bills.filter((bill) => bill.category === selectCategory)
       );
     }
-  }, [selectcategory, bills]);
-  const { loading } = useContext(AuthContext);
+  }, [selectCategory, bills]);
+
   useEffect(() => {
     document.title = "Bills | UBM System";
   }, []);
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-[60px] bg-black text-white">
@@ -28,62 +31,85 @@ const Bills = () => {
       </div>
     );
   }
+  const cardVariants = {
+  offscreen: { y: 100, opacity: 0 },
+  onscreen: {
+    y: 0,
+    opacity: 1,
+    rotate: 0,
+    transition: {
+      type: "spring",
+     
+      duration: 3,
+    },
+  },
+};
 
   return (
-    <>
-      <div>
-        <div className="mb-4">
-          <select
-            value={selectcategory}
-            onChange={(e) => {
-              setSelectcategory(e.target.value);
-            }}
-            className="border rounded p-2"
-          >
-            <option value="">All Categories</option>
-            <option value="Electricity">Electricity</option>
-            <option value="Gas">Gas</option>
-            <option value="Water">Water</option>
-            <option value="Internet">Internet</option>
-          </select>
-        </div>
-        <div className="grid  gap-6 p-20 md:grid-cols-3">
-          {filtterdBills.map((bill) => (
-            <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition duration-200 overflow-hidden">
-              {/* Image */}
-              <img src={bill.image} className="w-full h-48 object-cover" />
-
-              {/* Content */}
-              <div className="p-5">
-                <h2 className="text-lg font-semibold text-gray-800 mb-2">
-                  {bill.title}
-                </h2>
-
-                <div className="text-gray-600 text-sm space-y-1 mb-4">
-                  <p>
-                    <span className="font-medium text-gray-700">Category:</span>{" "}
-                    {bill.category}
-                  </p>
-                  <p>
-                    <span className="font-medium text-gray-700">Location:</span>{" "}
-                    {bill.location}
-                  </p>
-                  <p>
-                    <span className="font-medium text-gray-700">Amount:</span> ৳
-                    {bill.amount}
-                  </p>
-                </div>
-                <Link to={`/billDetails/${bill._id}`}>
-                  <button className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition">
-                    See Details
-                  </button>
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
+    <motion.div
+      className="max-w-6xl mx-auto px-4 py-6"
+       variants={cardVariants}
+      initial="offscreen"
+      whileInView="onscreen"
+      viewport={{ once: false, amount: 0.3 }}
+    >
+      <div className="mb-4">
+        <select
+          value={selectCategory}
+          onChange={(e) => setSelectCategory(e.target.value)}
+          className="border rounded p-2"
+        >
+          <option value="">All Categories</option>
+          <option value="Electricity">Electricity</option>
+          <option value="Gas">Gas</option>
+          <option value="Water">Water</option>
+          <option value="Internet">Internet</option>
+        </select>
       </div>
-    </>
+
+      <motion.div
+        className="grid gap-6 md:grid-cols-3"
+        initial="hidden"
+        animate="visible"
+        variants={{
+          hidden: {},
+          visible: { transition: { staggerChildren: 0.15 } },
+        }}
+      >
+        {filteredBills.map((bill) => (
+          <motion.div
+            key={bill._id}
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0 },
+            }}
+            whileHover={{ scale: 1.03 }}
+            className="bg-white rounded-xl shadow-md overflow-hidden"
+          >
+            <img src={bill.image} className="w-full h-48 object-cover" />
+            <div className="p-5">
+              <h2 className="text-lg font-semibold text-gray-800 mb-2">
+                {bill.title}
+              </h2>
+              <p>
+                <span className="font-medium">Category:</span> {bill.category}
+              </p>
+              <p>
+                <span className="font-medium">Location:</span> {bill.location}
+              </p>
+              <p>
+                <span className="font-medium">Amount:</span> ৳{bill.amount}
+              </p>
+              <Link to={`/billDetails/${bill._id}`}>
+                <button className="w-full bg-blue-500 text-white py-2 rounded-lg mt-2 hover:bg-blue-600 transition">
+                  See Details
+                </button>
+              </Link>
+            </div>
+          </motion.div>
+        ))}
+      </motion.div>
+    </motion.div>
   );
 };
 
